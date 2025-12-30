@@ -32,8 +32,8 @@ export default function Landing() {
         </div>
       </motion.div>
       
-      <div className="absolute bottom-8 text-zinc-800 text-[10px] uppercase tracking-widest">
-        Est. 2024
+      <div className="absolute bottom-8 text-white text-[10px] uppercase tracking-widest">
+        Jibraan Craig
       </div>
     </div>
   );

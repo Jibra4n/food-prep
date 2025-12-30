@@ -1,5 +1,3 @@
-import Push from 'pushover-notifications';
-
 export async function sendOrderNotification(orderDetails: {
   orderId: number;
   mainItem?: string;
@@ -9,7 +7,7 @@ export async function sendOrderNotification(orderDetails: {
   pickupDate: string;
   totalPrice: number;
 }) {
-  if (!process.env.PUSHOVER_USER_KEY || !process.env.PUSHOVER_API_TOKEN) {
+  if (!process.env.NTFY_TOPIC) {
     console.log('Push notifications not configured - skipping');
     return;
   }
@@ -24,25 +22,23 @@ export async function sendOrderNotification(orderDetails: {
     items.push(`${dessertQuantity}x ${dessertItem}`);
   }
 
-  const push = new Push({
-    user: process.env.PUSHOVER_USER_KEY,
-    token: process.env.PUSHOVER_API_TOKEN,
-  });
-
-  const message = {
-    message: `${items.join(', ')}\nPickup: ${pickupDate}`,
-    title: `🔔 New Order #${orderId} - £${(totalPrice / 100).toFixed(2)}`,
-    sound: 'cashregister',
-    priority: 1,
-  };
+  const title = `🔔 New Order #${orderId} - £${(totalPrice / 100).toFixed(2)}`;
+  const message = `${items.join(', ')}\nPickup: ${pickupDate}`;
 
   try {
-    await new Promise((resolve, reject) => {
-      push.send(message, (err: any, result: any) => {
-        if (err) reject(err);
-        else resolve(result);
-      });
+    const response = await fetch(`https://ntfy.sh/${process.env.NTFY_TOPIC}`, {
+      method: 'POST',
+      headers: {
+        'Title': title,
+        'Priority': '4',
+        'Tags': 'shopping_cart,money_with_wings',
+      },
+      body: message,
     });
+
+    if (!response.ok) {
+      throw new Error(`ntfy returned ${response.status}`);
+    }
     
     console.log(`✓ Push notification sent for order #${orderId}`);
   } catch (error) {

@@ -60,7 +60,11 @@ app.use((req, res, next) => {
   next();
 });
 
-(async () => {
+let isInitialized = false;
+
+async function initializeApp() {
+  if (isInitialized) return app;
+  
   await registerRoutes(httpServer, app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -81,19 +85,23 @@ app.use((req, res, next) => {
     await setupVite(httpServer, app);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || "5000", 10);
-  
-  // Only start server if not in serverless environment
-  if (process.env.VERCEL !== "1") {
+  isInitialized = true;
+  return app;
+}
+
+// For local development
+if (process.env.VERCEL !== "1") {
+  (async () => {
+    await initializeApp();
+    const port = parseInt(process.env.PORT || "5000", 10);
     httpServer.listen(port, "0.0.0.0", () => {
       log(`serving on port ${port}`);
     });
-  }
-})();
+  })();
+}
 
-// Export for Vercel serverless
-export default app;
+// Export for Vercel serverless - wrap in async handler
+export default async function handler(req: any, res: any) {
+  const initializedApp = await initializeApp();
+  return initializedApp(req, res);
+}

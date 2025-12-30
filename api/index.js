@@ -1,3 +1,3 @@
-import handler from '../dist/index.cjs';
+const handler = require('../dist/index.cjs');
 
-export default handler;
+module.exports = handler.default || handler;

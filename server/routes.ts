@@ -3,6 +3,7 @@ import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
+import { sendOrderNotification } from "./notifications";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -28,6 +29,22 @@ export async function registerRoutes(
     try {
       const input = api.orders.create.input.parse(req.body);
       const order = await storage.createOrder(input);
+      
+      // Get menu item details for notification
+      const mainItem = order.mainItemId ? await storage.getMenuItem(order.mainItemId) : undefined;
+      const dessertItem = order.dessertItemId ? await storage.getMenuItem(order.dessertItemId) : undefined;
+      
+      // Send notification (async, don't wait for it)
+      sendOrderNotification({
+        orderId: order.id,
+        mainItem: mainItem?.name,
+        mainQuantity: order.mainQuantity || 0,
+        dessertItem: dessertItem?.name,
+        dessertQuantity: order.dessertQuantity || 0,
+        pickupDate: order.pickupDate,
+        totalPrice: order.totalPrice,
+      }).catch(err => console.error('Notification error:', err));
+      
       res.status(201).json(order);
     } catch (err) {
       if (err instanceof z.ZodError) {

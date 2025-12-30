@@ -22,7 +22,7 @@ export async function sendOrderNotification(orderDetails: {
     items.push(`${dessertQuantity}x ${dessertItem}`);
   }
 
-  const title = `🔔 New Order #${orderId} - £${(totalPrice / 100).toFixed(2)}`;
+  const title = `New Order #${orderId} - £${(totalPrice / 100).toFixed(2)}`;
   const message = `${items.join(', ')}\nPickup: ${pickupDate}`;
 
   try {

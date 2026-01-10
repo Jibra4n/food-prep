@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- 
+        KingsPrep Info.plist Configuration
+        
+        INSTRUCTIONS:
+        1. Open your Info.plist in Xcode
+        2. Right-click → Open As → Source Code
+        3. Copy the relevant sections below into your plist
+        4. Make sure to place them inside the main <dict> tag
+    -->
+    
+    <!-- ========================================
+         CUSTOM FONTS CONFIGURATION
+         Add this section to enable custom fonts
+         ======================================== -->
+    <key>UIAppFonts</key>
+    <array>
+        <string>PlayfairDisplay-Bold.ttf</string>
+        <string>PlayfairDisplay-BoldItalic.ttf</string>
+        <string>DMSans-Regular.ttf</string>
+        <string>DMSans-Medium.ttf</string>
+        <string>DMSans-Bold.ttf</string>
+        <string>JetBrainsMono-Regular.ttf</string>
+    </array>
+    
+    <!-- ========================================
+         NETWORK SECURITY - DEVELOPMENT MODE
+         Allows HTTP connections for local testing
+         ⚠️ WARNING: Remove or modify for production!
+         ======================================== -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <!-- Option 1: Allow all HTTP (Development Only) -->
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        
+        <!-- Option 2: Allow specific domain (Commented out - use for production)
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>yourapi.com</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
+        </dict>
+        -->
+    </dict>
+    
+    <!-- ========================================
+         APP DISPLAY NAME (Optional)
+         How the app name appears on home screen
+         ======================================== -->
+    <key>CFBundleDisplayName</key>
+    <string>King's Prep</string>
+    
+    <!-- ========================================
+         LAUNCH SCREEN (Optional)
+         Configure if needed
+         ======================================== -->
+    <key>UILaunchScreen</key>
+    <dict>
+        <key>UIColorName</key>
+        <string>LaunchScreenBackground</string>
+        <key>UIImageName</key>
+        <string>LaunchImage</string>
+    </dict>
+    
+    <!-- ========================================
+         STATUS BAR STYLE
+         Force light content (white) on dark background
+         ======================================== -->
+    <key>UIStatusBarStyle</key>
+    <string>UIStatusBarStyleLightContent</string>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <false/>
+    
+    <!-- ========================================
+         SUPPORTED INTERFACE ORIENTATIONS
+         Restrict to portrait mode for better UX
+         ======================================== -->
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <!-- Uncomment to enable landscape modes
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+        -->
+    </array>
+    
+    <!-- iPad orientations (if supporting iPad) -->
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    
+</dict>
+</plist>
+
